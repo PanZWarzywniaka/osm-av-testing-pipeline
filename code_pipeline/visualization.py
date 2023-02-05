@@ -103,6 +103,7 @@ class RoadTestVisualizer:
         plt.suptitle(title_string, fontsize=14)
         plt.draw()
         plt.pause(0.001)
+        input("Visualisation DONE press enter...")
 
 
 

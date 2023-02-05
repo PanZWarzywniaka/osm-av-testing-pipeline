@@ -68,7 +68,7 @@ class RoadPoints:
 
         p2v = np.subtract(p2[0:2], p1[0:2])
         v = (p2v / np.linalg.norm(p2v)) * meters_from_road_start
-        origin = np.add(p1[0:2], p1r[0:2]) / 2
+        origin = np.add(p1[0:2], p1r[0:2]) / 2 #making car spawn in the middle of right lane
         deg = np.degrees(np.arctan2([-v[0]], [-v[1]]))
         res = BeamNGPose(pos=tuple(origin + v) + (p1[2],), rot=(0, 0, deg[0]))
         return res

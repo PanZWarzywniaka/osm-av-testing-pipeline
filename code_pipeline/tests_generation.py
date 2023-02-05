@@ -167,18 +167,18 @@ class TestGenerationStatistic:
         # self.test_generation_times = []
 
     def __str__(self):
-        msg = ""
-        msg += "test generated: " + str(self.test_generated) + "\n"
-        msg += "test valid: " + str(self.test_valid) + "\n"
-        msg += "test invalid: " + str(self.test_invalid) + "\n"
-        msg += "test passed: " + str(self.test_passed) + "\n"
-        msg += "test failed: " + str(self.test_failed) + "\n"
-        msg += "test in_error: " + str(self.test_in_error) + "\n"
-
-        msg += "(real) time spent in generation :" + str(sum(self.test_generation_real_times)) + "\n"
-        msg += "(real) time spent in execution :" + str(sum(self.test_execution_real_times)) + "\n"
-        msg += "(simulated) time spent in execution :" + str(sum(self.test_execution_simulation_times)) + "\n"
-        return msg
+        return f"""
+        test generated: {self.test_generated}
+        test valid: {self.test_valid}
+        test invalid: {self.test_invalid}
+        test passed: {self.test_passed}
+        test failed: {self.test_failed}
+        test in_error: {self.test_in_error}
+        
+        (real) time spent in generation: {round(sum(self.test_generation_real_times),2)}s
+        (real) time spent in execution : {round(sum(self.test_execution_real_times),2)}s
+        (simulated) time spent in execution : {round(sum(self.test_execution_simulation_times),2)}s
+        """ 
 
     def as_csv(self):
         # TODO There's definitively a more python way to do this

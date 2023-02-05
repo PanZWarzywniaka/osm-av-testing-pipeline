@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import logging as log
+import time
 
 from code_pipeline.tests_generation import RoadTestFactory
 
@@ -128,6 +129,19 @@ class ManualTestsGenerator():
 
         return road_points
 
+    def _generate_test_4(self):
+        road_points = []
+
+        # Create an horizontal segment starting close to the left edge of the map
+        x = 50.0
+        y = 50.0
+        road_points.append((x, y))
+        x = x + 50
+        y = y 
+        road_points.append((x, y))
+
+        return road_points
+    
     def _execute(self, test):
         # Creating the RoadTest from the points
         the_test = RoadTestFactory.create_road_test(test)
@@ -143,13 +157,16 @@ class ManualTestsGenerator():
 
         # Test 1 and test 2 are the same test, we need them to check if distance is computed correctly
         test_1 = self._generate_test_1()
-        test_2 = self._generate_test_2()
-        test_3 = self._generate_test_3()
-
         self._execute(test_1)
+
+        test_2 = self._generate_test_2()
         self._execute(test_2)
+
+        test_3 = self._generate_test_3()
         self._execute(test_3)
 
-        import time
-        time.sleep(10)
+        test_4 = self._generate_test_4()
+        self._execute(test_4)
+
+        time.sleep(1)
 
