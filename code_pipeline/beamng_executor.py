@@ -160,7 +160,6 @@ class BeamngExecutor(AbstractTestExecutor):
             brewer.bring_up()
             # iterations_count = int(self.test_time_budget/250)
             # idx = 0
-
             brewer.vehicle.ai_set_aggression(self.risk_value)
             #  Sets the target speed for the AI in m/s, limit means this is the maximum value (not the reference one)
             brewer.vehicle.ai_set_speed(self.max_speed_in_ms, mode='limit')

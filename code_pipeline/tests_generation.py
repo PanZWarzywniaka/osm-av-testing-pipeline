@@ -10,6 +10,15 @@ interpolation_distance = 1
 smoothness = 0
 min_num_nodes = 20
 
+def _get_b_spline_degree(num_of_points):
+    return 1
+
+    if num_of_points < 10:
+        return 1
+    if num_of_points < 15:
+        return 2
+
+    return 3
 
 def _interpolate(the_test):
     """
@@ -24,30 +33,23 @@ def _interpolate(the_test):
     if num_nodes < min_num_nodes:
         num_nodes = min_num_nodes
 
+    assert len(old_x_vals) == len(old_y_vals), "Number of x's must match number of y"
     assert len(old_x_vals) >= 2, "You need at leas two road points to define a road"
-    assert len(old_y_vals) >= 2, "You need at leas two road points to define a road"
 
-    if len(old_x_vals) == 2:
-        # With two points the only option is a straight segment
-        k = 1
-    elif len(old_x_vals) == 3:
-        # With three points we use an arc, using linear interpolation will result in invalid road tests
-        k = 2
-    else:
-        # Otheriwse, use cubic splines
-        k = 3
-
-    pos_tck, pos_u = splprep([old_x_vals, old_y_vals], s= smoothness, k=k)
+    k = _get_b_spline_degree(len(old_x_vals))
+    print(f"Using B-spline degree: {k}")
+    pos_tck, pos_u = splprep([old_x_vals, old_y_vals], s=smoothness, k=k)
 
     step_size = 1 / num_nodes
     unew = arange(0, 1 + step_size, step_size)
 
     new_x_vals, new_y_vals = splev(unew, pos_tck)
 
-    # Return the 4-tuple with default z and defatul road width
+    # Return the 4-tuple with default z and default road width
     return list(zip([round(v, rounding_precision) for v in new_x_vals],
                     [round(v, rounding_precision) for v in new_y_vals],
                     [-28.0 for v in new_x_vals],
+                    #makes car flying [-10.0 for v in new_x_vals],
                     [8.0 for v in new_x_vals]))
 
 

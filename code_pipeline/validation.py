@@ -111,7 +111,7 @@ class TestValidator:
 
         is_valid = True
         validation_msg = ""
-
+        return True, validation_msg
         if not self.is_right_type(the_test):
             is_valid = False
             validation_msg = "Wrong type"

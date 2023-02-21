@@ -13,9 +13,6 @@ class OSMTestsGenerator():
         road points. We assume a map of 200x200
     """
 
-    SHEFFIELD_BBOX = [53.356987, -1.510101, 53.402656, -1.433196]
-    KRAKOW_BBOX = [49.973493, 19.807804, 50.123627, 20.097225]
-
     def __init__(self, executor=None, map_size=None):
         self.executor = executor
         self.map_size = map_size #200
@@ -59,24 +56,7 @@ class OSMTestsGenerator():
             sim_points.append((sim_x, sim_y))
 
         return sim_points
-
-    @property
-    def abney_street_points(self):
-        geo_points = self.query_osm("Abney Street", self.SHEFFIELD_BBOX)
-        return self._geo_to_simulation_points(geo_points)
-    
-    @property
-    def burgundzka_street_points(self):
-        geo_points = self.query_osm("Burgundzka", self.KRAKOW_BBOX)
-        return self._geo_to_simulation_points(geo_points)    
-    
-    @property
-    def skosna_street_points(self):
-        geo_points = self.query_osm("Skośna", self.KRAKOW_BBOX)
-        return self._geo_to_simulation_points(geo_points)    
-
-
-
+        
     def _execute(self, test):
         # Creating the RoadTest from the points
         the_test = RoadTestFactory.create_road_test(test)
@@ -89,10 +69,35 @@ class OSMTestsGenerator():
 
     def start(self):
         log.info("Starting test generation")
-        
+        SHEFFIELD_BBOX = [53.356987, -1.510101, 53.402656, -1.433196]
+        KRAKOW_BBOX = [49.973493, 19.807804, 50.123627, 20.097225]
+        KETY_BBOX = [49.839258, 19.153293, 49.920978, 19.305325]
 
-        # self._execute(self.abney_street_points)
-        self._execute(self.skosna_street_points)
+        #interpolates weirdly
+        # geo_points = self.query_osm("Pitt Lane", SHEFFIELD_BBOX)
+        # sim_points =  self._geo_to_simulation_points(geo_points)  
+        # self._execute(sim_points)
+        
+        #couses error with interpolation
+        # geo_points = self.query_osm("Scotland Street", SHEFFIELD_BBOX)
+        # sim_points =  self._geo_to_simulation_points(geo_points) 
+
+
+        geo_points = self.query_osm("Czaniecka", KETY_BBOX)
+        sim_points =  self._geo_to_simulation_points(geo_points)
+        self._execute(sim_points)
+
+        #works well
+        geo_points = self.query_osm("Abney Street", SHEFFIELD_BBOX)
+        sim_points =  self._geo_to_simulation_points(geo_points)
+        self._execute(sim_points)
+
+        #works well
+        geo_points = self.query_osm("Normandzka", KRAKOW_BBOX)
+        sim_points =  self._geo_to_simulation_points(geo_points)
+        self._execute(sim_points)
+
+
         log.info("Finished executing all tests!")
 
 
