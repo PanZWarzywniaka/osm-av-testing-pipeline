@@ -28,8 +28,9 @@ class OSMTestsGenerator():
         road_points = []
         for e in overpass.query(query).elements():
             for node in e.nodes():
-                road_points.append((node.lat(),node.lon()))
+                road_points.append((node.lon(), node.lat()))
 
+        # points = enrich_with_elevation(road_points)
         return road_points
 
     def _geo_to_simulation_points(self, geo_points):
@@ -57,9 +58,9 @@ class OSMTestsGenerator():
 
         return sim_points
         
-    def _execute(self, test):
+    def _execute(self, test, title="Test"):
         # Creating the RoadTest from the points
-        the_test = RoadTestFactory.create_road_test(test)
+        the_test = RoadTestFactory.create_road_test(test, title)
         # Send the test for execution
         test_outcome, description, execution_data = self.executor.execute_test(the_test)
 
@@ -83,19 +84,21 @@ class OSMTestsGenerator():
         # sim_points =  self._geo_to_simulation_points(geo_points) 
 
 
-        geo_points = self.query_osm("Czaniecka", KETY_BBOX)
-        sim_points =  self._geo_to_simulation_points(geo_points)
-        self._execute(sim_points)
+        # geo_points = self.query_osm("Czaniecka", KETY_BBOX)
+        # sim_points =  self._geo_to_simulation_points(geo_points)
+        # self._execute(sim_points)
 
         #works well
-        geo_points = self.query_osm("Abney Street", SHEFFIELD_BBOX)
+        street_name = "Abney Street"
+        geo_points = self.query_osm(street_name, SHEFFIELD_BBOX)
         sim_points =  self._geo_to_simulation_points(geo_points)
-        self._execute(sim_points)
+        self._execute(sim_points, street_name)
 
         #works well
-        geo_points = self.query_osm("Normandzka", KRAKOW_BBOX)
+        street_name = "Normandzka"
+        geo_points = self.query_osm(street_name, KRAKOW_BBOX)
         sim_points =  self._geo_to_simulation_points(geo_points)
-        self._execute(sim_points)
+        self._execute(sim_points, street_name)
 
 
         log.info("Finished executing all tests!")

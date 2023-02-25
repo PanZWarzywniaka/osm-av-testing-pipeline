@@ -34,21 +34,12 @@ class RoadTestVisualizer:
         # plt.gcf().set_title("Last Generated Test")
         plt.gca().set_aspect('equal', 'box')
         plt.gca().set(xlim=(-30, self.map_size + 30), ylim=(-30, self.map_size + 30))
+        plt.gca().set_facecolor((0.18, 0.80, 0.44))
 
     def visualize_road_test(self, the_test):
 
         self._setup_figure()
 
-        # Add information about the test validity
-        title_string = ""
-        if the_test.is_valid is not None:
-            title_string = title_string + "Test is " + ("valid" if the_test.is_valid else "invalid")
-            if not the_test.is_valid:
-                title_string = title_string + ":" + the_test.validation_message
-
-        plt.suptitle(title_string, fontsize=14)
-        plt.draw()
-        plt.pause(0.001)
         
         # Plot the map. Trying to re-use an artist in more than one Axes which is supported
         map_patch = patches.Rectangle((0, 0), self.map_size, self.map_size, linewidth=1, edgecolor='black', facecolor='none')
@@ -68,8 +59,8 @@ class RoadTestVisualizer:
         # Road Points
         x = [t[0] for t in the_test.road_points]
         y = [t[1] for t in the_test.road_points]
-        plt.plot(x, y, 'wo')
-
+        plt.plot(x, y, "wo")
+# color='yellow'
         # Plot the little triangle indicating the starting position of the ego-vehicle
         delta_x = sx[1] - sx[0]
         delta_y = sy[1] - sy[0]
@@ -94,11 +85,14 @@ class RoadTestVisualizer:
 
 
         # Add information about the test validity
-        title_string = ""
-        if the_test.is_valid is not None:
-            title_string = " ".join([title_string, "Test", str(the_test.id), "is" , ("valid" if the_test.is_valid else "invalid")])
-            if not the_test.is_valid:
-                title_string = title_string + ":" + the_test.validation_message
+
+    
+        title_string = f"""The test "{the_test.title}" is """
+        if the_test.is_valid:
+                title_string += "valid"
+        else:
+                title_string += f"invalid: {the_test.validation_message}"
+
 
         plt.suptitle(title_string, fontsize=14)
         plt.draw()

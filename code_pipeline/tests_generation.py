@@ -71,7 +71,7 @@ class RoadTestFactory:
             Note that this class is nested in the RoadTestFactory to avoid direct creation
         """
 
-        def __init__(self, road_points):
+        def __init__(self, road_points, title):
             assert type(road_points) is list, "You must provide a list of road points to create a RoadTest"
             assert all(len(i) == 2 for i in road_points), "Malformed list of road points"
             # The original input
@@ -84,6 +84,7 @@ class RoadTestFactory:
             # At the beginning we do not know whether the test is valid or not
             self.is_valid = None
             self.validation_message = None
+            self.title = title
 
         def get_road_polygon(self):
             return self.road_polygon
@@ -133,8 +134,8 @@ class RoadTestFactory:
             return json.dumps(theobj)
 
     @staticmethod
-    def create_road_test(road_points):
-        road_test = RoadTestFactory.RoadTest(road_points)
+    def create_road_test(road_points, title="Test"):
+        road_test = RoadTestFactory.RoadTest(road_points, title)
         # TODO Why not simply declare the id as field of RoadTest?
         # Generate the new id. Call next otherwise we return the generator
         setattr(road_test, 'id', next(RoadTestFactory.test_id_generator))
